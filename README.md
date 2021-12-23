@@ -84,7 +84,7 @@ docker exec -it mtc_app_1 php artisan tinker --execute='Person::factory({row_cou
 | --- | --- |
 | Adress | http://localhost:8000/person/remove/{person_id} |
 
-> Migration da db tarafında relationship yapıldı ve delete cascade olarak ayarlandı. Silinin bir personelin adresleri de siliniyor.
+> Migration da db tarafında relationship yapıldı ve delete cascade olarak ayarlandı. Silinen bir personelin adresleri de siliniyor.
 
 ### 5. Adres Listeleme
 
