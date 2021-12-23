@@ -1,0 +1,53 @@
+version: "3.8"
+services: 
+    nginx:
+        image: nginx:latest
+        container_name: nginx_mtc
+        restart: always
+        volumes:
+            - .:/var/www/
+            - ./nginx/:/etc/nginx/conf.d/
+        ports: 
+            - 8000:80
+        networks: 
+            - backend
+    mysql:
+        platform: linux/x86_64
+        image: mysql
+        tty: true
+        container_name: mysql_mtc
+        restart: always
+        ports:
+            - 3307:3306
+        environment: 
+            MYSQL_DATABASE: mtc
+            MYSQL_USER: mtc
+            MYSQL_PASSWORD: mtc
+            MYSQL_RANDOM_ROOT_PASSWORD: '1'
+        volumes: 
+            - db:/var/lib/mysql
+        networks: 
+            - backend
+    memcached:
+        container_name: memcached_mtc
+        image: memcached:latest
+        ports:
+            - "11211:11211"
+        networks: 
+            - backend
+    app:
+        build:
+          context: .
+          dockerfile: dockerfile
+        image: mtc
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+          - ./:/var/www
+        networks: 
+            - backend
+networks: 
+    backend:
+        driver: bridge
+volumes: 
+    db:
